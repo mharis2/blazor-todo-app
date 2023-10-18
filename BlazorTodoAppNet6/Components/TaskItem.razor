@@ -1,0 +1,21 @@
+@code {
+    [Parameter] public Models.Task? TodoItem { get; set; }
+
+    [Parameter] public EventCallback<int> OnDelete { get; set; }
+    [Parameter] public EventCallback<int> OnToggleComplete { get; set; }
+
+    private void ToggleComplete(ChangeEventArgs e)
+    {
+        if (e.Value is bool isComplete)
+        {
+            TodoItem.IsComplete = isComplete;
+            OnToggleComplete.InvokeAsync(TodoItem.Id);
+        }
+    }
+}
+
+<div>
+    <input type="checkbox" checked="@TodoItem?.IsComplete" @onchange="ToggleComplete" />
+    <span style="text-decoration: @(TodoItem?.IsComplete == true ? "line-through" : "none")">@TodoItem?.Description</span>
+    <button @onclick="() => OnDelete.InvokeAsync(TodoItem.Id)">Delete</button>
+</div>

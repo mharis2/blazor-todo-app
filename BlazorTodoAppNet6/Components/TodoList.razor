@@ -1,0 +1,39 @@
+@page "/todolist"
+@inject Services.TaskService TaskService
+
+<h3>Todo List</h3>
+
+@if (TaskService.GetAllTasks() is not null)
+{
+    @foreach (var task in TaskService.GetAllTasks())
+    {
+        <TaskItem TodoItem="task" OnDelete="DeleteTask" OnToggleComplete="ToggleComplete"></TaskItem>
+    }
+}
+
+<input @bind="newTaskDescription" placeholder="Enter new task" />
+<button @onclick="AddTask">Add</button>
+
+@code {
+    private string newTaskDescription = "";
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTaskDescription))
+        {
+            var newTask = new Models.Task { Description = newTaskDescription, IsComplete = false };
+            TaskService.AddTask(newTask);
+            newTaskDescription = ""; // Clear the input
+        }
+    }
+
+    private void DeleteTask(int taskId)
+    {
+        TaskService.DeleteTask(taskId);
+    }
+
+    private void ToggleComplete(int taskId)
+    {
+        TaskService.ToggleComplete(taskId);
+    }
+}
