@@ -36,5 +36,3 @@ Special thanks to all the tutorials and resources that made this project possibl
 This project is licensed under the GPL License. For more details, see [LICENSE](LICENSE.md).
 
 ---
-
-**Happy Coding!**
